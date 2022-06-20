@@ -1,6 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorkerRegistration';
@@ -9,9 +9,9 @@ const conatainer = document.getElementById('root');
 const root = createRoot(conatainer);
 
 root.render(
-  <BrowserRouter>
+  <HashRouter>
     <App />
-  </BrowserRouter>
+  </HashRouter>
 );
 
 // If you want your app to work offline and load faster, you can change
