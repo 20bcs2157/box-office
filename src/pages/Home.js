@@ -1,32 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import MainPageLayout from '../components/MainPageLayout';
 import { apiGet } from '../misc/config';
 import ShowGrid from '../components/show/ShowGrid';
 import ActorGrid from '../components/actor/ActorGrid';
 import { useLastQuery } from '../misc/custom-hooks';
 import {
+  SearchInput,
   RadioInputsWrapper,
   SearchButtonWrapper,
-  SearchInput,
 } from './Home.styled';
 import CustomRadio from '../components/CustomRadio';
 
-function Home() {
+const renderResults = results => {
+  if (results && results.length === 0) {
+    return <div>No results</div>;
+  }
+
+  if (results && results.length > 0) {
+    return results[0].show ? (
+      <ShowGrid data={results} />
+    ) : (
+      <ActorGrid data={results} />
+    );
+  }
+
+  return null;
+};
+
+const Home = () => {
   const [input, setInput] = useLastQuery();
-  const [results, setresults] = useState(null);
+  const [results, setResults] = useState(null);
   const [searchOption, setSearchOption] = useState('shows');
 
   const isShowsSearch = searchOption === 'shows';
-
   const onSearch = () => {
     apiGet(`/search/${searchOption}?q=${input}`).then(result => {
-      setresults(result);
+      setResults(result);
     });
   };
 
-  const onInputChange = ev => {
-    setInput(ev.target.value);
-  };
+  const onInputChange = useCallback(
+    ev => {
+      setInput(ev.target.value);
+    },
+    [setInput]
+  );
 
   const onKeyDown = ev => {
     if (ev.keyCode === 13) {
@@ -34,24 +52,9 @@ function Home() {
     }
   };
 
-  const onRadioChange = ev => {
+  const onRadioChange = useCallback(ev => {
     setSearchOption(ev.target.value);
-  };
-
-  const renderresults = () => {
-    if (results && results.length === 0) {
-      return <div>No results</div>;
-    }
-
-    if (results && results.length > 0) {
-      return results[0].show ? (
-        <ShowGrid data={results} />
-      ) : (
-        <ActorGrid data={results} />
-      );
-    }
-    return null;
-  };
+  }, []);
 
   return (
     <MainPageLayout>
@@ -90,9 +93,9 @@ function Home() {
           Search
         </button>
       </SearchButtonWrapper>
-      {renderresults()}
+      {renderResults(results)}
     </MainPageLayout>
   );
-}
+};
 
 export default Home;

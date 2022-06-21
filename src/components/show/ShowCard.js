@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
-import { Star } from '../styled';
 
 import { StyledShowCard } from './ShowCard.styled';
+import { Star } from '../styled';
 
-function ShowCard({ id, image, name, summary, onStarClick, isStarred }) {
+const ShowCard = ({ id, image, name, summary, onStarClick, isStarred }) => {
   const summaryAsText = summary
     ? `${summary.split(' ').slice(0, 10).join(' ').replace(/<.+?>/g, '')}...`
     : 'No description';
@@ -21,12 +21,12 @@ function ShowCard({ id, image, name, summary, onStarClick, isStarred }) {
 
       <div className="btns">
         <Link to={`/show/${id}`}>Read more</Link>
-        <button type="button" onClick={onStarClick}>
+        <button type="button" onClick={() => onStarClick(id, isStarred)}>
           <Star active={isStarred} />
         </button>
       </div>
     </StyledShowCard>
   );
-}
+};
 
-export default ShowCard;
+export default memo(ShowCard);

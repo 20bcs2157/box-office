@@ -1,7 +1,7 @@
 import React from 'react';
-import { SeasonList, SeasonsWrapper } from './Seasons.styled';
+import { SeasonsWrapper, SeasonList } from './Seasons.styled';
 
-function Seasons({ seasons }) {
+const Seasons = ({ seasons }) => {
   return (
     <SeasonsWrapper>
       <p>
@@ -33,6 +33,6 @@ function Seasons({ seasons }) {
       </SeasonList>
     </SeasonsWrapper>
   );
-}
+};
 
 export default Seasons;
